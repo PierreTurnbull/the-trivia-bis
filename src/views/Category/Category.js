@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput, score }) => {
+const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput, score, lives }) => {
   const currentQuestion = category.clues[currentQuestionIndex];
   return (
     <section>
@@ -19,6 +19,7 @@ const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput, s
             Next
           </button>
         </div>
+        <p>Li{lives > 1 ? 'ves' : 'fe'}: {lives}</p>
         <p>Score: {score}</p>
       </form>
     </section>

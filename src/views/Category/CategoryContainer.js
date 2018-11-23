@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../helpers/api';
 import Category from './Category';
+import tools from '../../helpers/tools';
 
 class CategoryContainer extends Component {
   state = {
@@ -41,31 +42,18 @@ class CategoryContainer extends Component {
     const expectedAnswer = this.state.category.clues[currentQuestionIndex].answer.toLowerCase()
     const answerInput = this.answerInput.current;
     const givenAnswer = answerInput.value.toLowerCase();
-    const newQuestionIndex = currentQuestionIndex + 1
 
     e.preventDefault();
 
     // if answer is right, increment score
     if (expectedAnswer === givenAnswer) {
-      this.setState({
-        score: this.state.score + 10
-      }, () => {
-        localStorage[`${this.state.category.id}-score`] = this.state.score;
-      });
+      tools.incrementCategoryData(this, 'score', 10);
     } else {
-      this.setState({
-        lives: this.state.lives - 1
-      }, () => {
-        localStorage[`${this.state.category.id}-lives`] = this.state.lives;
-      })
+      tools.incrementCategoryData(this, 'lives', -1);
     }
 
     // go to the next question
-    if (this.state.lives === 0) {
-      newQuestionIndex = 0;
-    }
-    localStorage[`${this.state.category.id}-currentQuestionIndex`] = newQuestionIndex;
-    this.setState({ currentQuestionIndex: newQuestionIndex });
+    tools.incrementCategoryData(this, 'currentQuestionIndex', this.state.lives === 0 ? 0 : 1)
     answerInput.value = '';
   }
 
@@ -92,7 +80,7 @@ class CategoryContainer extends Component {
     if (!lives) {
       return (
         <div>
-          <p>Game Over!</p>
+          <p>Game Over! 0 li{lives > 1 ? 'ves' : 'fe'} left.</p>
           <p>Score: {score}</p>
           <button type="button" onClick={this.resetCategory}>Reset category</button>
         </div>
@@ -102,7 +90,7 @@ class CategoryContainer extends Component {
     // display when category has already been finished
     if (currentQuestionIndex >= category.clues.length) return (
       <div>
-        <p>You already finished this category with a score of {score}</p>
+        <p>You already finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
         <button type="button" onClick={this.resetCategory}>Reset category</button>
         <Link to={`/`} key={category.id}>Go back to category list</Link>
       </div>
@@ -114,6 +102,7 @@ class CategoryContainer extends Component {
         category={category}
         currentQuestionIndex={currentQuestionIndex}
         score={score}
+        lives={lives}
         handleSubmit={this.handleSubmit}
         // plug createRef to chidlren
         answerInput={this.answerInput}
