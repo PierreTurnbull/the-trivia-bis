@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput }) => {
+const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput, score, lives }) => {
   const currentQuestion = category.clues[currentQuestionIndex];
   return (
     <section>
       <form onSubmit={handleSubmit}>
-        <h1>You choosed: {category.title}</h1>
+        <h1>You chose: {category.title}</h1>
         <div className="question">
           <h3 className="question__title">
             {currentQuestion.question}
@@ -19,6 +19,8 @@ const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput })
             Next
           </button>
         </div>
+        <p>Li{lives > 1 ? 'ves' : 'fe'}: {lives}</p>
+        <p>Score: {score}</p>
       </form>
     </section>
   );
