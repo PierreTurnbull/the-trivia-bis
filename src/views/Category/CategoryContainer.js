@@ -27,24 +27,21 @@ class CategoryContainer extends Component {
   }
 
   handleSubmit = async (e) => {
-    // here I prevent the default bh of submitting form
-    e.preventDefault();
     const currentQuestionIndex = this.state.currentQuestionIndex;
     const expectedAnswer = this.state.category.clues[currentQuestionIndex].answer.toLowerCase()
     const answerInput = this.answerInput.current;
     const givenAnswer = answerInput.value.toLowerCase();
     const newQuestionIndex = currentQuestionIndex + 1
 
+    e.preventDefault();
+
     // if answer is right, increment score
     if (expectedAnswer === givenAnswer) {
-      console.log('next');
       await this.setState({
         score: this.state.score + 10
       }, () => {
         localStorage[`${this.state.category.id}-score`] = this.state.score;
       });
-    } else {
-      console.log('noo');
     }
 
 
@@ -52,21 +49,14 @@ class CategoryContainer extends Component {
     localStorage[`${this.state.category.id}-questionIndex`] = newQuestionIndex;
     this.setState({ currentQuestionIndex: newQuestionIndex });
     answerInput.value = '';
-
-    // write logic to handle good/bad answer
-    // increment currentQuestionIndex
-    // save in the storage the id of the question
-    // if no more question, remove category from categories playable
-    // increment score somewhere and redirect to /
-
-    // check if answer is equal to the requested answer from the current question
   }
 
   render() {
     const { category, currentQuestionIndex, score } = this.state;
-    // at first render, category will be null so we need to wait
-    // before using data.
+    // default display until data is available
     if (!category) return <div>is loading</div>
+
+    // display when category has already been finished
     if (currentQuestionIndex >= category.clues.length) return (
       <div>
         <p>You already finished this category with a score of {score}</p>
@@ -74,6 +64,7 @@ class CategoryContainer extends Component {
       </div>
     )
 
+    // display when category is available
     return (
       <Category
         category={category}
