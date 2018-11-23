@@ -4,17 +4,30 @@ import api from '../../helpers/api';
 
 class HomeContainer extends Component {
   state = {
-    categories: [],
+    categoriesFinished: [],
+    categoriesUnfinished: []
   }
   async componentDidMount() {
-    const data = await api.getCategories();
+    const categories = await api.getCategories();
+    let categoriesFinished = [];
+    let categoriesUnfinished = [];
+
+    categories.forEach(category => {
+      const hasLost = localStorage[`${category.id}-lives`] === '0';
+      const hasWon = localStorage[`${category.id}-currentQuestionIndex`] >= category.clues_count;
+
+      hasLost || hasWon
+        ? categoriesFinished.push(category)
+        : categoriesUnfinished.push(category);
+    })
     this.setState({
-      categories: data,
+      categoriesFinished,
+      categoriesUnfinished
     });
   }
   render() {
     return (
-      <Home categories={this.state.categories} />
+      <Home categoriesFinished={this.state.categoriesFinished} categoriesUnfinished={this.state.categoriesUnfinished} />
     );
   }
 }

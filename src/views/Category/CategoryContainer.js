@@ -85,6 +85,7 @@ class CategoryContainer extends Component {
           <p>Game Over! 0 li{lives > 1 ? 'ves' : 'fe'} left.</p>
           <p>Score: {score}</p>
           <button type="button" onClick={this.resetCategory}>Reset category</button>
+          <Link to={`/`} key={category.id}>Go back to category list</Link>
         </div>
       )
     }
