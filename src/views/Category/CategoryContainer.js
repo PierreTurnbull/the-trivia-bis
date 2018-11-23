@@ -9,6 +9,7 @@ class CategoryContainer extends Component {
     category: null,
     currentQuestionIndex: 0,
     score: 0,
+    maxScore: 0,
     lives: 3,
     defaults: {
       currentQuestionIndex: 0,
@@ -32,6 +33,7 @@ class CategoryContainer extends Component {
       category: data,
       currentQuestionIndex: currentQuestionIndex !== undefined ? Number(currentQuestionIndex) : this.state.defaults.currentQuestionIndex,
       score: score !== undefined ? Number(score) : this.state.defaults.score,
+      maxScore: data.clues.length * 10,
       lives: lives !== undefined ? Number(lives) : this.state.defaults.lives
     });
     window.aaa = this.state;
@@ -72,7 +74,7 @@ class CategoryContainer extends Component {
   }
 
   render() {
-    const { category, currentQuestionIndex, score, lives } = this.state;
+    const { category, currentQuestionIndex, score, maxScore, lives } = this.state;
     // default display until data is available
     if (!category) return <div>is loading</div>
 
@@ -90,7 +92,8 @@ class CategoryContainer extends Component {
     // display when category has already been finished
     if (currentQuestionIndex >= category.clues.length) return (
       <div>
-        <p>You already finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
+        <p>You finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
+        { score === maxScore && <p>You're a winner!</p> }
         <button type="button" onClick={this.resetCategory}>Reset category</button>
         <Link to={`/`} key={category.id}>Go back to category list</Link>
       </div>
