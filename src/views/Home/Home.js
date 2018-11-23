@@ -13,7 +13,7 @@ const Home = ({ categoriesUnfinished, categoriesFinished }) => (
           {categoriesUnfinished.map((category, key) => (
             <li key={category.id}>
               <Link to={`/categories/${category.id}`}>
-                {category.title}
+                <p>{category.title} - progression: {localStorage[`${category.id}-currentQuestionIndex`] || 0} / {category.clues_count}</p>
               </Link>
             </li>
           ))}
@@ -26,13 +26,18 @@ const Home = ({ categoriesUnfinished, categoriesFinished }) => (
       <div>
         <h2>Finished quiz</h2>
         <ul>
-          {categoriesFinished.map((category, key) => (
-            <li key={category.id}>
-              <Link to={`/categories/${category.id}`}>
-                {category.title}
-              </Link>
-            </li>
-          ))}
+          {categoriesFinished.map((category, key) => {
+            const status = Number(localStorage[`${category.id}-lives`]) > 0 ? 'won' : 'lost'
+            const score = `Score: ${localStorage[`${category.id}-score`] || 0} / ${category.clues_count * 10}`
+
+            return (
+              <li key={category.id}>
+                <Link to={`/categories/${category.id}`}>
+                  <p>{category.title} - {status} - {score} </p>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
       </div>
     )}

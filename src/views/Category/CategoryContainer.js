@@ -23,19 +23,20 @@ class CategoryContainer extends Component {
 
   // async needed when using promise
   async componentDidMount() {
-    const data = await api.getCategoryById(this.props.match.params.id);
-    const currentQuestionIndex = localStorage[`${data.id}-currentQuestionIndex`]
-    const score = localStorage[`${data.id}-score`]
-    const lives = localStorage[`${data.id}-lives`]
+    const category = await api.getCategoryById(this.props.match.params.id);
+    const categoryId = category.id
+    const currentQuestionIndex = tools.getLocalValue(this, 'currentQuestionIndex', categoryId);
+    const score = tools.getLocalValue(this, 'score', categoryId);
+    const lives = tools.getLocalValue(this, 'lives', categoryId);
 
-    console.log(data.clues.map(item => item.answer))
+    console.log(category.clues.map(item => item.answer));
     this.setState({
-      category: data,
-      currentQuestionIndex: currentQuestionIndex !== undefined ? Number(currentQuestionIndex) : this.state.defaults.currentQuestionIndex,
-      score: score !== undefined ? Number(score) : this.state.defaults.score,
-      maxScore: data.clues.length * 10,
-      lives: lives !== undefined ? Number(lives) : this.state.defaults.lives
+      category,
+      maxScore: category.clues_count * 10
     });
+    tools.updateAndPersist(this, 'currentQuestionIndex', currentQuestionIndex)
+    tools.updateAndPersist(this, 'score', score);
+    tools.updateAndPersist(this, 'lives', lives);
     window.aaa = this.state;
   }
 
@@ -44,18 +45,21 @@ class CategoryContainer extends Component {
     const expectedAnswer = this.state.category.clues[currentQuestionIndex].answer.toLowerCase()
     const answerInput = this.answerInput.current;
     const givenAnswer = answerInput.value.toLowerCase();
+    const newQuestionIndex = this.state.lives === 0
+      ? this.state.currentQuestionIndex
+      : this.state.currentQuestionIndex + 1
 
     e.preventDefault();
 
     // if answer is right, increment score
     if (expectedAnswer === givenAnswer) {
-      tools.incrementCategoryData(this, 'score', 10);
+      tools.updateAndPersist(this, 'score', this.state.score + 10);
     } else {
-      tools.incrementCategoryData(this, 'lives', -1);
+      tools.updateAndPersist(this, 'lives', this.state.lives - 1);
     }
 
     // go to the next question
-    tools.incrementCategoryData(this, 'currentQuestionIndex', this.state.lives === 0 ? 0 : 1)
+    tools.updateAndPersist(this, 'currentQuestionIndex', newQuestionIndex)
     answerInput.value = '';
   }
 
@@ -91,7 +95,7 @@ class CategoryContainer extends Component {
     }
 
     // display when category has already been finished
-    if (currentQuestionIndex >= category.clues.length) return (
+    if (currentQuestionIndex >= category.clues_count) return (
       <div>
         <p>You finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
         { score === maxScore && <p>You're a winner!</p> }
