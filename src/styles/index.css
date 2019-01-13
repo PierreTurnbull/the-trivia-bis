@@ -1,4 +1,15 @@
+@font-face {
+ font-family: "fontello";
+ src: url("../font/fontello.woff2") format("woff2"),
+        url("../font/fontello.woff") format("woff"),
+        url("../font/fontello.ttf") format("ttf"),
+        url("../font/fontello.eot") format("eot"),
+        url("../font/fontello.svg") format("svg");
+}
+
 body {
+  background: #000;
+  color: #fff;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -8,7 +19,166 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: #fff;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.game {
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.title, .quizStatus {
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title {
+  text-align: center;
+}
+
+.quizStatus {
+  display: flex;
+  margin-top: 30px;
+  color: #868686;
+}
+
+.quizStatus:after {
+  display: block;
+  margin: auto 0 auto 15px;
+  content: '';
+  width: 100%;
+  height: 4px;
+  background: #868686;
+}
+
+.quizCard {
+  margin-top: 10px;
+  padding: 14px;
+  background: #303030;
+  border-radius: 8px;
+}
+
+.quizCard-textContent {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.quizCard-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn {
+  display: none;
+  margin-top: 15px;
+  padding: 4px 8px;
+  width: 100%;
+  background: none;
+  border: 0;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.btn.start,
+.btn-submit {
+  background: #00aeef;
+}
+
+.btn.start:hover,
+.btn-submit:hover {
+  background: #008dc1;
+}
+
+.quiz-selected .btn.btn.restart {
+  display: block;
+}
+
+.btn.restart {
+  background: #ff0000;
+}
+
+.btn.restart:hover {
+  background: #cd0000;
+}
+
+.quizCard:hover .btn {
+  display: block;
+}
+
+.btn-back {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.btn-back:before {
+  font-family: 'fontello';
+  content: '\E800';
+  font-size: 26px;
+  color: #fff;
+}
+
+.quiz-selected {
+  position: relative;
+}
+
+.quiz-selected .title {
+  text-align: left;
+}
+
+.question-container {
+  margin-top: 60px;
+}
+
+.question-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.question-score {
+  font-size: 14px;
+}
+
+.question-text {
+  margin: 40px 0;
+  text-align: center
+}
+
+.question-answer {
+  display: flex;
+}
+
+.question-input {
+  width: 100%;
+  background: #303030;
+  border: solid 1px #fff;
+  padding: 6px 10px;
+  color: #fff;
+}
+
+.btn-submit {
+  width: 120px;
+  border: solid 1px #fff;
+}
+
+.btn-submit:after {
+  font-family: 'fontello';
+  content: '\F178';
+  font-size: 26px;
+  color: #fff;
 }
