@@ -85,23 +85,29 @@ class CategoryContainer extends Component {
     // display when game over
     if (!lives) {
       return (
-        <div>
-          <p>Game Over! 0 li{lives > 1 ? 'ves' : 'fe'} left.</p>
-          <p>Score: {score}</p>
-          <button type="button" onClick={this.resetCategory}>Reset category</button>
-          <Link to={`/`} key={category.id}>Go back to category list</Link>
-        </div>
+        <section className="game">
+          <div className="quiz-selected">
+            <h1 className="title">{category.title}</h1>
+            <p className="question-text">Game Over! 0 li{lives > 1 ? 'ves' : 'fe'} left.</p>
+            <p className="question-score">Score : {score}</p>
+            <button className="btn restart" type="button" onClick={this.resetCategory}>Restart</button>
+            <Link className="btn-back" to={`/`} key={category.id} title={'Go back to category list'}></Link>
+          </div>
+        </section>
       )
     }
 
     // display when category has already been finished
     if (currentQuestionIndex >= category.clues_count) return (
-      <div>
-        <p>You finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
-        { score === maxScore && <p>You're a winner!</p> }
-        <button type="button" onClick={this.resetCategory}>Reset category</button>
-        <Link to={`/`} key={category.id}>Go back to category list</Link>
-      </div>
+      <section className="game">
+        <div className="quiz-selected">
+          <h1 className="title">{category.title}</h1>
+          <p className="question-text">You finished this category with a score of {score} and {lives} li{lives > 1 ? 'ves' : 'fe'}.</p>
+          { score === maxScore && <p>You're a winner!</p> }
+          <button className="btn restart" type="button" onClick={this.resetCategory}>Restart</button>
+          <Link className="btn-back" to={`/`} key={category.id} title={'Go back to category list'}></Link>
+        </div>
+      </section>
     )
 
     // display when category is available

@@ -5,24 +5,22 @@ import { Link } from 'react-router-dom';
 const Category = ({ category, currentQuestionIndex, handleSubmit, answerInput, score, lives }) => {
   const currentQuestion = category.clues[currentQuestionIndex];
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <h1>You chose: {category.title}</h1>
-        <div className="question">
-          <h3 className="question__title">
-            {currentQuestion.question}
-          </h3>
-          <div className="question__answerInput">
-            {/* We give the ref below in order check the value */}
-            <input ref={answerInput} />
+    <section className="game">
+      <form className="quiz-selected" onSubmit={handleSubmit}>
+        <h1 className="title">{category.title}</h1>
+        <div className="question-container">
+          <div className="question-info">
+            <p className="question-lives">Li{lives > 1 ? 'ves' : 'fe'}: {lives}</p>
+            <p className="question-score">Score : {score}</p>
           </div>
-          <button className="question__submit" type="submit">
-            Next
-          </button>
+          <p className="question-text">{currentQuestion.question}</p>
+          <div className="question-answer">
+            {/* We give the ref below in order check the value */}
+            <input className="question-input" ref={answerInput} placeholder="answer" />
+            <button className="btn-submit" type="submit" title="Next"></button>
+          </div>
         </div>
-        <p>Li{lives > 1 ? 'ves' : 'fe'}: {lives}</p>
-        <p>Score: {score}</p>
-        <Link to={`/`} key={category.id}>Go back to category list</Link>
+        <Link className="btn-back" to={`/`} key={category.id} title={'Go back to category list'}></Link>
       </form>
     </section>
   );
