@@ -29,7 +29,6 @@ class CategoryContainer extends Component {
     const score = tools.getLocalValue(this, 'score', categoryId);
     const lives = tools.getLocalValue(this, 'lives', categoryId);
 
-    console.log(category.clues.map(item => item.answer));
     this.setState({
       category,
       maxScore: category.clues_count * 10
